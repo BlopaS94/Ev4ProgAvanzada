@@ -7,16 +7,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services to the container.
+// Agregar soporte para sesiones
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Tiempo de expiración de la sesión
+    options.Cookie.HttpOnly = true; // Mayor seguridad
+    options.Cookie.IsEssential = true; // Esencial para GDPR
+});
+
+// Habilitar acceso a HttpContext en vistas y controladores
+builder.Services.AddHttpContextAccessor();
+
+// Agregar servicios al contenedor
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurar el pipeline de middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -25,10 +35,23 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Habilitar sesiones en la aplicación
+app.UseSession();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    app.MapControllerRoute(
+    name: "proyectoes",
+    pattern: "Proyectoes/{action=Index}/{id?}",
+    defaults: new { controller = "Proyectos" });
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

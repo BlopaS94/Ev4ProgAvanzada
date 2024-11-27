@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,7 +8,6 @@
     <title>@ViewData["Title"] - Ev4ProgAvanzada</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Ev4ProgAvanzada.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -19,12 +20,41 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "Administrador")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Proyectoes" asp-action="Index">Gestión de Proyectos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="AgendaClientes" asp-action="Index">Agenda de Clientes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Agentes" asp-action="Index">Gestión de Agentes</a>
+                            </li>
+                        }
+                        else if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "Agente")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="AgendaClientes" asp-action="Index">Agenda de Clientes</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (!string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("UserName")))
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link">Hola, @HttpContextAccessor.HttpContext.Session.GetString("UserName")</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Logout">Cerrar Sesión</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Login">Iniciar Sesión</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

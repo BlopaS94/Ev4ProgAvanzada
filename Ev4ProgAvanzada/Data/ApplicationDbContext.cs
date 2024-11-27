@@ -10,5 +10,7 @@ namespace Ev4ProgAvanzada.Data
         public DbSet<Agente> Agentes { get; set; }
         public DbSet<Proyecto> Proyectos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<AgendaCliente> AgendaClientes { get; set; }
+
     }
 }

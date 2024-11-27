@@ -15,6 +15,10 @@ namespace Ev4ProgAvanzada.Controllers
 
         public IActionResult Index()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
             return View();
         }
 

@@ -118,7 +118,7 @@ namespace Ev4ProgAvanzada.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AgenteId"] = new SelectList(_context.Agentes, "Id", "Email", proyecto.AgenteId);
+            ViewData["AgenteId"] = new SelectList(_context.Agentes, "Id", "Nombre", proyecto.AgenteId);
             return View(proyecto);
         }
 

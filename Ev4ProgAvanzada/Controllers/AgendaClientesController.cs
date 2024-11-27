@@ -10,87 +10,87 @@ using Ev4ProgAvanzada.Models;
 
 namespace Ev4ProgAvanzada.Controllers
 {
-    public class UsuariosController : Controller
+    public class AgendaClientesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public UsuariosController(ApplicationDbContext context)
+        public AgendaClientesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Usuarios
+        // GET: AgendaClientes
         public async Task<IActionResult> Index()
         {
-              return _context.Usuarios != null ? 
-                          View(await _context.Usuarios.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Usuarios'  is null.");
+              return _context.AgendaClientes != null ? 
+                          View(await _context.AgendaClientes.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.AgendaClientes'  is null.");
         }
 
-        // GET: Usuarios/Details/5
+        // GET: AgendaClientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Usuarios == null)
+            if (id == null || _context.AgendaClientes == null)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
+            var agendaCliente = await _context.AgendaClientes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuario == null)
+            if (agendaCliente == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(agendaCliente);
         }
 
-        // GET: Usuarios/Create
+        // GET: AgendaClientes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Usuarios/Create
+        // POST: AgendaClientes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Email,Rol,Password")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Proyecto,Empresa,Telefono,Correo,FechaDeIngreso,HoraDeAgenda,FechaHoraAtencionOficina")] AgendaCliente agendaCliente)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
+                _context.Add(agendaCliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            return View(agendaCliente);
         }
 
-        // GET: Usuarios/Edit/5
+        // GET: AgendaClientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Usuarios == null)
+            if (id == null || _context.AgendaClientes == null)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null)
+            var agendaCliente = await _context.AgendaClientes.FindAsync(id);
+            if (agendaCliente == null)
             {
                 return NotFound();
             }
-            return View(usuario);
+            return View(agendaCliente);
         }
 
-        // POST: Usuarios/Edit/5
+        // POST: AgendaClientes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Email,Rol,Password")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Proyecto,Empresa,Telefono,Correo,FechaDeIngreso,HoraDeAgenda,FechaHoraAtencionOficina")] AgendaCliente agendaCliente)
         {
-            if (id != usuario.Id)
+            if (id != agendaCliente.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace Ev4ProgAvanzada.Controllers
             {
                 try
                 {
-                    _context.Update(usuario);
+                    _context.Update(agendaCliente);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.Id))
+                    if (!AgendaClienteExists(agendaCliente.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace Ev4ProgAvanzada.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            return View(agendaCliente);
         }
 
-        // GET: Usuarios/Delete/5
+        // GET: AgendaClientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Usuarios == null)
+            if (id == null || _context.AgendaClientes == null)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
+            var agendaCliente = await _context.AgendaClientes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuario == null)
+            if (agendaCliente == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(agendaCliente);
         }
 
-        // POST: Usuarios/Delete/5
+        // POST: AgendaClientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Usuarios == null)
+            if (_context.AgendaClientes == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Usuarios'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.AgendaClientes'  is null.");
             }
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario != null)
+            var agendaCliente = await _context.AgendaClientes.FindAsync(id);
+            if (agendaCliente != null)
             {
-                _context.Usuarios.Remove(usuario);
+                _context.AgendaClientes.Remove(agendaCliente);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioExists(int id)
+        private bool AgendaClienteExists(int id)
         {
-          return (_context.Usuarios?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.AgendaClientes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
